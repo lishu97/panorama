@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>金科博翠园-水电布置图</title>
+
+  <link rel="stylesheet" href="./css/photo-sphere-viewer.css">
+
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+    }
+
+    #photosphere {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="photosphere"></div>
+
+  <script src="./js/three.js"></script>
+  <script src="./js/browser.js"></script>
+  <script src="./js/NoSleep.js"></script>
+  <script src="./js/photo-sphere-viewer.js"></script>
+  <script src="./js/cubemap.js"></script>
+
+  <script>
+    var panos = [
+      {
+        url: {
+          left: './images/01entrance/pano_l.jpg',
+          front: './images/01entrance/pano_f.jpg',
+          right: './images/01entrance/pano_r.jpg',
+          back: './images/01entrance/pano_b.jpg',
+          top: './images/01entrance/pano_u.jpg',
+          bottom: './images/01entrance/pano_d.jpg'
+        },
+        desc: '水电布置图 - 入户处',
+      },
+      {
+        url: {
+          left: './images/02livingRoom/pano_l.jpg',
+          front: './images/02livingRoom/pano_f.jpg',
+          right: './images/02livingRoom/pano_r.jpg',
+          back: './images/02livingRoom/pano_b.jpg',
+          top: './images/02livingRoom/pano_u.jpg',
+          bottom: './images/02livingRoom/pano_d.jpg'
+        },
+        desc: '水电布置图 - 客厅处',
+      },
+      {
+        url: {
+          left: './images/03kitchen/pano_l.jpg',
+          front: './images/03kitchen/pano_f.jpg',
+          right: './images/03kitchen/pano_r.jpg',
+          back: './images/03kitchen/pano_b.jpg',
+          top: './images/03kitchen/pano_u.jpg',
+          bottom: './images/03kitchen/pano_d.jpg'
+        },
+        desc: '水电布置图 - 厨房处',
+      },
+      {
+        url: {
+          left: './images/04study/pano_l.jpg',
+          front: './images/04study/pano_f.jpg',
+          right: './images/04study/pano_r.jpg',
+          back: './images/04study/pano_b.jpg',
+          top: './images/04study/pano_u.jpg',
+          bottom: './images/04study/pano_d.jpg'
+        },
+        desc: '水电布置图 - 书房处',
+      },
+      {
+        url: {
+          left: './images/05bedroom1/pano_l.jpg',
+          front: './images/05bedroom1/pano_f.jpg',
+          right: './images/05bedroom1/pano_r.jpg',
+          back: './images/05bedroom1/pano_b.jpg',
+          top: './images/05bedroom1/pano_u.jpg',
+          bottom: './images/05bedroom1/pano_d.jpg'
+        },
+        desc: '水电布置图 - 儿童房',
+      },
+      {
+        url: {
+          left: './images/06mainBedroom/pano_l.jpg',
+          front: './images/06mainBedroom/pano_f.jpg',
+          right: './images/06mainBedroom/pano_r.jpg',
+          back: './images/06mainBedroom/pano_b.jpg',
+          top: './images/06mainBedroom/pano_u.jpg',
+          bottom: './images/06mainBedroom/pano_d.jpg'
+        },
+        desc: '水电布置图 - 主卧',
+      },
+      {
+        url: {
+          left: './images/07mainBathroom/pano_l.jpg',
+          front: './images/07mainBathroom/pano_f.jpg',
+          right: './images/07mainBathroom/pano_r.jpg',
+          back: './images/07mainBathroom/pano_b.jpg',
+          top: './images/07mainBathroom/pano_u.jpg',
+          bottom: './images/07mainBathroom/pano_d.jpg'
+        },
+        desc: '水电布置图 - 主卧卫生间',
+      },
+      {
+        url: {
+          left: './images/08bedroom2/pano_l.jpg',
+          front: './images/08bedroom2/pano_f.jpg',
+          right: './images/08bedroom2/pano_r.jpg',
+          back: './images/08bedroom2/pano_b.jpg',
+          top: './images/08bedroom2/pano_u.jpg',
+          bottom: './images/08bedroom2/pano_d.jpg'
+        },
+        desc: '水电布置图 - 老人房',
+      },
+    ];
+
+    var curStep = 0;
+    var PSV = new PhotoSphereViewer.Viewer({
+      container: 'photosphere',
+      adapter: PhotoSphereViewer.CubemapAdapter,
+      panorama: panos[curStep].url,
+      caption: panos[curStep].desc,
+      loadingImg: './images/loading.gif',
+      navbar: [
+        'autorotate',
+        {
+          title: '前进',
+          className: 'custom-button',
+          content: '前进',
+          onClick: () => changePano(PSV, panos, 'go'),
+        },
+        {
+          title: '后退',
+          className: 'custom-button',
+          content: '后退',
+          onClick: () => changePano(PSV, panos, 'back'),
+        },
+        'caption',
+      ],
+    });
+
+    function changePano(PSV, panos, type) {
+      curStep = curStep + (type === 'go' ? 1 : -1);
+      if (curStep >= panos.length) {
+        curStep = curStep - panos.length;
+      } else if (curStep < 0) {
+        curStep = curStep + panos.length;
+      }
+
+      PSV.setPanorama(panos[curStep].url, { longitude: 0, latitude: 0, zoom: 50 })
+        .then(function () {
+          PSV.navbar.setCaption(panos[curStep].desc);
+        }, function () { });
+    }
+  </script>
+</body>
+
+</html>
